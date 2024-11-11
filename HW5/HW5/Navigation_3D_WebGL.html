@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        #container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        #gl-canvas {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+        }
+
+        .left-button {
+            position: absolute;
+            z-index: 10;
+            left: 8%;
+            top: 85%;
+            transform: translate(-50%, -50%);
+        }
+
+        .right-button {
+            position: absolute;
+            z-index: 10;
+            left: 20%;
+            top: 85%;
+            transform: translate(-50%, -50%);
+        }
+        .up-button {
+            position: absolute;
+            z-index: 10;
+            left: 14%;
+            top: 80%;
+            transform: translate(-50%, -50%);
+        }
+
+        .down-button {
+            position: absolute;
+            z-index: 10;
+            left: 14%;
+            top: 90%;
+            transform: translate(-50%, -50%);
+        }
+        .forward-button {
+            position: absolute;
+            z-index: 10;
+            left: 1%;
+            top: 53%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+
+        .backward-button {
+            position: absolute;
+            z-index: 10;
+            left: 1%;
+            top: 59%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+        .leftturn-button {
+            position: absolute;
+            z-index: 10;
+            left: 75%;
+            top: 75%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+
+        .rightturn-button {
+            position: absolute;
+            z-index: 10;
+            left: 82%;
+            top: 75%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+
+        .leftorbit-button {
+            position: absolute;
+            z-index: 10;
+            left: 75%;
+            top: 68%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+
+        .rightorbit-button {
+            position: absolute;
+            z-index: 10;
+            left: 82%;
+            top: 68%;
+            transform: scale(.2);
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3> Navigation Control in 3D: </h3>
+
+    <div id="container">
+
+        <canvas id="gl-canvas">
+            Oops ... your browser doesn't support the HTML5 canvas element
+        </canvas>
+        <button id="leftbutton" class="left-button">L</button>
+        <button id="rightbutton" class="right-button">R</button>
+        <button id="upbutton" class="up-button">U</button>
+        <button id="downbutton" class="down-button">D</button>
+        <button id="forwardbutton" class="forward-button" style="background: url(forward.png)">
+        </button>
+        <button id="backwardbutton" class="backward-button" style="background: url(backward.png)">
+        </button>
+        <button id="leftturnbutton" class="leftturn-button" style="background: url(left.png)">
+        </button>
+        <button id="rightturnbutton" class="rightturn-button" style="background: url(right.png)">
+        </button>
+        <button id="leftorbitbutton" class="leftorbit-button" style="background: url(orbitLeft.png)">
+        </button>
+        <button id="rightorbitbutton" class="rightorbit-button" style="background: url(orbitRight.png)">
+        </button>
+    </div>
+
+    <p><strong>Navigation Control</strong></p>
+    <table style="border: 0px;">
+        <tr>
+            <th>Action</th>
+            <th>Button</th>
+            <th>Key</th>
+        </tr>
+        <tr>
+             <td>Moving the viewpoint <strong> up</strong></td>
+             <td>U</td><td>Shift + Up Arrow </td>
+                   </tr>
+        <tr>
+            <td>Moving the viewpoint <strong> down</strong></td>
+            <td>D</td><td>Shift + Down Arrow</td>
+        </tr>
+        <tr>
+            <td>Moving the viewpoint to the <strong> left</strong></td>
+            <td> L</td><td>Left Arrow</td>
+        </tr>
+        <tr>
+            <td>Moving the viewpoint to the <strong> right</strong></td>
+            <td> R</td><td>Right Arrow</td>
+        </tr>
+        <tr>
+            <td>Moving the viewpoint <strong> forward</strong></td>
+            <td><img src='forward.png' style="width: 20px"> </td><td>Up Arrow</td>
+        </tr>
+        <tr>
+            <td>Moving the viewpoint <strong> backword</strong></td>
+            <td> <img src='backward.png' style="width: 20px"></td><td>Down Arrow</td>
+        </tr>
+            <tr>
+            <td><strong>Turning</strong> the viewpoint to the <strong> left</strong></td>
+            <td> <img src='left.png' style="width: 20px"></td><td>Ctrl + Left Arrow</td>
+        </tr>
+        <tr>
+            <td><strong>Turning</strong> the viewpoint to the <strong>right</strong></td>
+            <td> <img src='right.png' style="width: 20px"></td><td>Ctrl + Right Arrow</td>
+        </tr>
+        <tr>
+            <td><strong>Orbiting</strong> the view to the <strong>left</strong></td>
+            <td><img src='orbitLeft.png' style="width: 20px"></td><td>Alt + Left Arrow</td>
+        </tr>
+        <tr>
+            <td><strong>Orbiting</strong> the view to the <strong>right</strong></td>
+            <td><img src='orbitRight.png' style="width: 20px"></td><td>Alt + Right Arrow</td>
+        </tr>
+    </table>
+</body>
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in  vec4 aPosition;
+in  vec4 aColor;
+out vec4 vColor;
+
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
+
+void main()
+{
+    gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
+    vColor = aColor;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+#version 300 es
+
+precision mediump float;
+
+in vec4 vColor;
+out vec4 fColor;
+
+
+void
+main()
+{
+    fColor = vColor;
+}
+</script>
+<p>
+
+</p>
+<span id='msg'></span>
+
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js"></script>
+<script type="text/javascript" src="navigation.js"></script>
+
+</html>
